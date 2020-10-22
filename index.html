@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    {{ message }}
+    {{text}}
+    <button v-on:click="onClick">ボタン</button>
+    <input v-model="text" type="text">
+    <div class="line" v-for="line in field">
+      <div class="block" v-for="block in line">
+        <div v-if="block == 0" class="blank inline-block">
+
+        </div>
+        <div v-else-if="block == 1" class="fixed-block inline-block">
+          
+        </div>
+        <div v-else-if="block == 2" class="move-block inline-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!',
+      text: "",
+      field: [
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,2,2,2,2,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,1,0,0,0,0,0,0,0,0],
+        [0,1,0,0,0,0,0,1,0,0],
+        [0,1,1,0,0,0,0,1,1,1]
+      ]
+    },
+    created(){
+      setInterval(this.BlockMove,1000)
+    },
+    methods:{
+      onClick(){
+        //dataの中身を参照するにはthis.と参照しなければいけない
+        console.log("ボタンが押されたことを検出",this.text)
+      },
+      BlockMove(){
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+             console.log(this.field[i][j])
+          }
+        }
+      }
+    }
+  })
+</script>
+</html>
