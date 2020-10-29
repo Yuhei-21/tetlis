@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
+  <div id="app" >
     {{ message }}
     {{text}}
     <button v-on:click="onClick">ボタン</button>
@@ -28,15 +28,17 @@
     </div>
   </div>
 </body>
+
 <script>
+
   var app = new Vue({
     el: '#app',
     data: {
       message: 'Hello Vue!',
       text: "",
       field: [
-        [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,2,2,2,2,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
@@ -58,7 +60,20 @@
       ]
     },
     created(){
-      setInterval(this.BlockMove,1000)
+      setInterval(this.BlockMove,500)
+      const self = this
+      document.addEventListener('keydown', (event) => {
+        var keyName = event.key;
+          if(keyName == "h"){
+            self.RightMove()
+          }
+          if(keyName == "g"){
+            self.LeftMove()
+          }
+          if(keyName == "b"){
+            self.DownMove()
+          }
+      });
     },
     methods:{
       onClick(){
@@ -66,11 +81,162 @@
         console.log("ボタンが押されたことを検出",this.text)
       },
       BlockMove(){
+        const tmpfield = [
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0]
+        ]
         for(let i=0; i<this.field.length; i++){
           for(let j=0; j<this.field[i].length; j++){
-             console.log(this.field[i][j])
+            //  console.log(this.field[i][j])
+            // this.field[i+1][j] = this.field[i][j]
+            if(this.field[i][j] == 2){
+              if(i < this.field.length-1){
+                console.log("call")
+                tmpfield[i+1][j] = this.field[i][j]
+                if(tmpfield[i+1][j] == tmpfield[19][j]){
+                  tmpfield[i+1][j] = 1
+                }
+              }
+            }
+            else if(this.field[i][j] == 1){
+              tmpfield[i][j] = this.field[i][j]
+            }
           }
         }
+        this.field = tmpfield
+        this.$forceUpdate()
+      },
+      RightMove(){
+        const tmpfield = [
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0]
+        ]
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[i][j] == 2){
+              if(i < this.field.length-1){
+                tmpfield[i][j+1] = this.field[i][j]
+              }
+            }
+            else if(this.field[i][j] == 1){
+              tmpfield[i][j] = this.field[i][j]
+            }
+          }
+        }
+        this.field = tmpfield
+        this.$forceUpdate()
+      },
+      LeftMove(){
+        const tmpfield = [
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0]
+        ]
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[i][j] == 2){
+              if(i < this.field.length-1){
+                tmpfield[i][j-1] = this.field[i][j]
+              }
+            }
+            else if(this.field[i][j] == 1){
+              tmpfield[i][j] = this.field[i][j]
+            }
+          }
+        }
+        this.field = tmpfield
+        this.$forceUpdate()
+      },
+      DownMove(){
+        const tmpfield = [
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0]
+        ]
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[i][j] == 2){
+              if(i < this.field.length-1){
+                tmpfield[i+1][j] = this.field[i][j]
+              }
+            }
+            else if(this.field[i][j] == 1){
+              tmpfield[i][j] = this.field[i][j]
+            }
+          }
+        }
+        this.field = tmpfield
+        this.$forceUpdate()
       }
     }
   })
