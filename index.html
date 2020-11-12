@@ -96,6 +96,16 @@
         }
         return this.field
       },
+      checkRowClear(){
+        for(let i=0; i<this.field.length; i++){
+          isClear = true
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[i][j] != 1 && this.field[i][j] != 9){
+              isClear = false
+            }
+          }
+        }
+      },
       BlockMove(){
         let tmpfield = [
           [9,0,0,0,0,0,0,0,0,0,0,9],
@@ -145,7 +155,6 @@
           [9,0,0,0,0,0,0,0,0,0,0,9],
           [9,9,9,9,9,9,9,9,9,9,9,9],
         ]
-        let tmpfield3 = [9,1,1,1,1,1,1,1,1,1,1,9]
 
         let isHit = false
         //まず今回の移動で当たっているかを判断する
@@ -170,6 +179,14 @@
         if(isHit){
           //当たっていればすべてを固める
           this.stopAllBlock()
+          //物が1に変わったタイミング
+          //この中でもし、1列に1か9しか存在しなければ
+          //ブロックが消えたと判断して、1列を削除
+          //スコアに加点する
+          this.checkRowClear()
+          if(isClear){
+            console.log(isClear)
+          }
         }else{
           for(let i=0; i<this.field.length; i++){
             for(let j=0; j<this.field[i].length; j++){
@@ -184,13 +201,8 @@
           }
           this.field = tmpfield2
         }
-        for(let i=0; i<this.field.length; i++){
-          for(let j=0; j<this.field[i].length; j++){
-            if(this.field[i][j] == tmpfield3){
-              console.log(a)
-            }
-          }
-        }
+
+
         this.$forceUpdate()
       },
       RightMove(){
