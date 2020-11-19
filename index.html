@@ -97,13 +97,18 @@
         return this.field
       },
       checkRowClear(){
+        let isClear = true
         for(let i=0; i<this.field.length; i++){
-          isClear = true
           for(let j=0; j<this.field[i].length; j++){
             if(this.field[i][j] != 1 && this.field[i][j] != 9){
               isClear = false
             }
           }
+        }
+        if(isClear){
+            console.log("フラグが立っています")
+        }else{
+          console.log("フラグが立っていません")
         }
       },
       BlockMove(){
@@ -184,9 +189,6 @@
           //ブロックが消えたと判断して、1列を削除
           //スコアに加点する
           this.checkRowClear()
-          if(isClear){
-            console.log(isClear)
-          }
         }else{
           for(let i=0; i<this.field.length; i++){
             for(let j=0; j<this.field[i].length; j++){
