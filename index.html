@@ -97,19 +97,58 @@
         return this.field
       },
       checkRowClear(){
-        let isClear = true
+        const c_row = []
         for(let i=0; i<this.field.length; i++){
+          let isClear = true
           for(let j=0; j<this.field[i].length; j++){
             if(this.field[i][j] != 1 && this.field[i][j] != 9){
               isClear = false
             }
           }
+          if(isClear){
+            c_row.push(i)
+          }
         }
-        if(isClear){
-            console.log("フラグが立っています")
-        }else{
-          console.log("フラグが立っていません")
+        this.clearRow(c_row)
+      },
+      clearRow(){
+        let tmpfield = [
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,0,0,0,0,0,0,0,0,0,0,9],
+          [9,9,9,9,9,9,9,9,9,9,9,9],
+        ]
+
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[i][j] == 1){
+              tmpfield[i+1][j] = this.field[i][j]
+              if(tmpfield[21][j] == 1){
+                tmpfield[21][j] = 9
+              }
+            }
+          }
         }
+        this.field = tmpfield
+        this.$forceUpdate()
       },
       BlockMove(){
         let tmpfield = [
