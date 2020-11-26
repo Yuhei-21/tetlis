@@ -69,15 +69,16 @@
       const self = this
       document.addEventListener('keydown', (event) => {
         var keyName = event.key;
-          if(keyName == "h"){
-            self.RightMove()
-          }
-          if(keyName == "g"){
-            self.LeftMove()
-          }
-          if(keyName == "b"){
-            self.DownMove()
-          }
+        // console.log(keyName)
+        if(keyName == "ArrowRight"){
+          self.RightMove()
+        }
+        if(keyName == "ArrowLeft"){
+          self.LeftMove()
+        }
+        if(keyName == "ArrowDown"){
+          self.DownMove()
+        }
       });
     },
     methods:{
@@ -110,18 +111,18 @@
             
           }
         }
-
-        if(c_row.length = 1){
-          console.log("1000")
+        // let score = 0
+        if(c_row.length == 1){
+          this.text = 1000
         }
-        else if(c_row.length = 2){
-          console.log("3000")
+        else if(c_row.length == 2){
+          this.text = 3000
         }
-        else if(c_row.length = 3){
-          console.log("6000")
+        else if(c_row.length == 3){
+          this.text = 9000
         }
-        else if(c_row.length = 4){
-          console.log("10000")
+        else if(c_row.length == 4){
+          this.text = 18000
         }
         for(const row of c_row){
           this.clearRow(row)
