@@ -10,7 +10,7 @@
 <body>
   <div id="app" >
     {{ message }}
-    {{text}}
+    {{totalscore}}
     <!-- <button v-on:click="onClick">ボタン</button>
     <input v-model="text" type="text"> -->
     <div class="line" v-for="line in field">
@@ -37,8 +37,8 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'Score',
-      text: "0",
+      message: 'Total Score',
+      totalscore: 0,
       field: [
         [9,0,0,0,0,2,2,0,0,0,0,9],
         [9,0,0,0,0,0,2,0,0,0,0,9],
@@ -62,6 +62,40 @@
         [9,1,0,0,0,0,0,0,1,0,0,9],
         [9,1,1,1,1,0,0,1,1,1,1,9],
         [9,9,9,9,9,9,9,9,9,9,9,9],
+      ],
+      addBlockPattern: [
+        [
+          [2,2,0],
+          [0,2,2]
+        ],
+        [
+          [0,2,2],
+          [2,2,0]
+        ],
+        [
+          [2],
+          [2],
+          [2],
+          [2]
+        ],
+        [
+          [0,2,0],
+          [2,2,2]
+        ],
+        [
+          [2,2],
+          [2,2]
+        ],
+        [
+          [2,0],
+          [2,0],
+          [2,2],
+        ],
+        [
+          [0,2],
+          [0,2],
+          [2,2],
+        ]
       ]
     },
     created(){
@@ -85,6 +119,14 @@
       onClick(){
         //dataの中身を参照するにはthis.と参照しなければいけない
         console.log("ボタンが押されたことを検出",this.text)
+      },
+      createdBlock(){
+        this.field[0][5] = this.addBlockPattern[0][0][0]
+        this.field[0][6] = this.addBlockPattern[0][0][1]
+        this.field[0][7] = this.addBlockPattern[0][0][2]
+        this.field[1][5] = this.addBlockPattern[0][1][0]
+        this.field[1][6] = this.addBlockPattern[0][1][1]
+        this.field[1][7] = this.addBlockPattern[0][1][2]
       },
       stopAllBlock(){
         // console.log("called")
@@ -111,18 +153,17 @@
             
           }
         }
-        // let score = 0
         if(c_row.length == 1){
-          this.text = 1000
+          this.totalscore = this.totalscore + 1000
         }
         else if(c_row.length == 2){
-          this.text = 3000
+          this.totalscore = this.totalscore + 3000
         }
         else if(c_row.length == 3){
-          this.text = 9000
+          this.totalscore = this.totalscore + 9000
         }
         else if(c_row.length == 4){
-          this.text = 18000
+          this.totalscore = this.totalscore + 18000
         }
         for(const row of c_row){
           this.clearRow(row)
@@ -256,6 +297,7 @@
           //ブロックが消えたと判断して、1列を削除
           //スコアに加点する
           this.checkRowClear()
+          this.createdBlock()
         }else{
           for(let i=0; i<this.field.length; i++){
             for(let j=0; j<this.field[i].length; j++){
