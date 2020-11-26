@@ -11,8 +11,8 @@
   <div id="app" >
     {{ message }}
     {{text}}
-    <button v-on:click="onClick">ボタン</button>
-    <input v-model="text" type="text">
+    <!-- <button v-on:click="onClick">ボタン</button>
+    <input v-model="text" type="text"> -->
     <div class="line" v-for="line in field">
       <div class="block" v-for="block in line">
         <div v-if="block == 0" class="blank inline-block">
@@ -37,10 +37,12 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'Hello Vue!',
-      text: "",
+      message: 'Score',
+      text: "0",
       field: [
-        [9,0,0,0,2,2,2,2,0,0,0,9],
+        [9,0,0,0,0,2,2,0,0,0,0,9],
+        [9,0,0,0,0,0,2,0,0,0,0,9],
+        [9,0,0,0,0,2,2,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
@@ -58,9 +60,7 @@
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
-        [9,0,0,0,0,0,0,0,0,0,0,9],
-        [9,0,1,0,0,0,1,0,0,0,0,9],
-        [9,1,1,1,1,1,1,0,0,0,0,9],
+        [9,1,1,1,1,0,0,1,1,1,1,9],
         [9,9,9,9,9,9,9,9,9,9,9,9],
       ]
     },
@@ -98,7 +98,7 @@
       },
       checkRowClear(){
         const c_row = []
-        for(let i=0; i<this.field.length; i++){
+        for(let i=0; i<this.field.length-1; i++){
           let isClear = true
           for(let j=0; j<this.field[i].length; j++){
             if(this.field[i][j] != 1 && this.field[i][j] != 9){
@@ -109,9 +109,12 @@
             c_row.push(i)
           }
         }
-        this.clearRow(c_row)
+        for(const row of c_row){
+          this.clearRow(row)
+        }
+        
       },
-      clearRow(){
+      clearRow(row){
         let tmpfield = [
           [9,0,0,0,0,0,0,0,0,0,0,9],
           [9,0,0,0,0,0,0,0,0,0,0,9],
@@ -136,17 +139,27 @@
           [9,0,0,0,0,0,0,0,0,0,0,9],
           [9,9,9,9,9,9,9,9,9,9,9,9],
         ]
-
-        for(let i=0; i<this.field.length; i++){
-          for(let j=0; j<this.field[i].length; j++){
-            if(this.field[i][j] == 1){
-              tmpfield[i+1][j] = this.field[i][j]
-              if(tmpfield[21][j] == 1){
-                tmpfield[21][j] = 9
-              }
-            }
+        
+        
+        //まず、消える列の1を全部0にする
+        for(let j=0; j<this.field[row].length; j++){
+          if(this.field[row][j] == 1){
+            this.field[row][j] = 0
           }
         }
+        
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            tmpfield[i][j] = this.field[i][j]
+          }
+        }
+        // //さらに１段落とす
+        for(let i=0; i<row; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            tmpfield[i+1][j] = this.field[i][j]
+          }
+        }
+
         this.field = tmpfield
         this.$forceUpdate()
       },
