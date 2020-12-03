@@ -37,12 +37,10 @@
   var app = new Vue({
     el: '#app',
     data: {
+      isGameOver:false,
       message: 'Total Score',
       totalscore: 0,
       field: [
-        [9,0,0,0,0,2,2,0,0,0,0,9],
-        [9,0,0,0,0,0,2,0,0,0,0,9],
-        [9,0,0,0,0,2,2,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
@@ -58,9 +56,12 @@
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,0,0,0,0,0,0,0,0,0,0,9],
-        [9,1,1,1,1,0,0,1,1,1,1,9],
-        [9,1,0,0,0,0,0,0,1,0,0,9],
-        [9,1,1,1,1,0,0,1,1,1,1,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
+        [9,0,0,0,0,0,0,0,0,0,0,9],
         [9,9,9,9,9,9,9,9,9,9,9,9],
       ],
       addBlockPattern: [
@@ -99,6 +100,7 @@
       ]
     },
     created(){
+      this.createdBlock()
       setInterval(this.BlockMove,500)
       const self = this
       document.addEventListener('keydown', (event) => {
@@ -128,6 +130,9 @@
             this.field[0+i][5+j] = currentaddBlockPattern[i][j]
           }
         }
+        if(this.isGameOver){
+          return
+        }
       },
       stopAllBlock(){
         // console.log("called")
@@ -139,6 +144,22 @@
           }
         }
         return this.field
+      },
+      gameOverCheck(){
+        for(let i=0; i<this.field.length; i++){
+          for(let j=0; j<this.field[i].length; j++){
+            if(this.field[0][j] == 1 ){
+              this.isGameOver = true
+            }
+          }
+        }
+        if(this.isGameOver){
+          for(let i=0; i<this.field.length; i++){
+            for(let j=0; j<this.field[i].length; j++){
+              this.field[i][j] = 9
+            }
+          }
+        }
       },
       checkRowClear(){
         const c_row = []
@@ -293,6 +314,7 @@
         if(isHit){
           //当たっていればすべてを固める
           this.stopAllBlock()
+          this.gameOverCheck()
           //物が1に変わったタイミング
           //この中でもし、1列に1か9しか存在しなければ
           //ブロックが消えたと判断して、1列を削除
