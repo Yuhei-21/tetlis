@@ -121,12 +121,13 @@
         console.log("ボタンが押されたことを検出",this.text)
       },
       createdBlock(){
-        this.field[0][5] = this.addBlockPattern[0][0][0]
-        this.field[0][6] = this.addBlockPattern[0][0][1]
-        this.field[0][7] = this.addBlockPattern[0][0][2]
-        this.field[1][5] = this.addBlockPattern[0][1][0]
-        this.field[1][6] = this.addBlockPattern[0][1][1]
-        this.field[1][7] = this.addBlockPattern[0][1][2]
+        var random = Math.floor( Math.random () * this.addBlockPattern.length);
+        const currentaddBlockPattern = this.addBlockPattern[random]
+        for(let i=0; i<currentaddBlockPattern.length; i++){
+          for(let j=0; j<currentaddBlockPattern[i].length; j++){
+            this.field[0+i][5+j] = currentaddBlockPattern[i][j]
+          }
+        }
       },
       stopAllBlock(){
         // console.log("called")
